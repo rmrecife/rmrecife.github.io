@@ -1,0 +1,940 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+	<link rel="stylesheet" href="css/Leaflet.GraphicScale.min.css">
+	<link rel="stylesheet" href="css/styleLegend.css">        
+	<style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Classificação cronológica da área construída* na RMR, RMJP e RMCG**</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+	<script src="js/Leaflet.GraphicScale.min.js"></script>
+        <script src="data/Outrosmunicpios_2.js"></script>
+        <script src="data/MunicpiosdaRMCG_3.js"></script>
+        <script src="data/MunicpiosdaRMJP_4.js"></script>
+        <script src="data/MunicpiosdaRMR_5.js"></script>
+        <script src="data/LimitesatuaisdaRMCG_6.js"></script>
+        <script src="data/LimitesatuaisdaRMJP_7.js"></script>
+        <script src="data/LimitesatuaisdaRMR_8.js"></script>
+        <script src="data/LimitesdaRMRem2000_9.js"></script>
+        <script src="data/LimitesdaRMRem1973_10.js"></script>
+        <script src="data/Limitesestaduais_11.js"></script>
+        <script src="data/reaconstrudade2000a2014CORBANEetal2018_12.js"></script>
+        <script src="data/reaconstrudade1975a2000CORBANEetal2018_13.js"></script>
+        <script src="data/reaconstrudaat1975CORBANEetal2018_14.js"></script>
+        <script src="data/LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15.js"></script>
+        <script src="data/reaurbanizadapoucodensaIBGE2017_16.js"></script>
+        <script src="data/reaurbanizadadensaIBGE2017_17.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-8.348794283399831,-36.24513408722028],[-6.858882514216356,-32.9483340521674]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        var layer_Arruamento_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            opacity: 1.0,
+            attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_Arruamento_0;
+        var layer_Satlite_1 = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            opacity: 1.0,
+            attribution: '<a href="https://www.google.at/permissions/geoguidelines/attr-guide.html">Map data ©2015 Google</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_Satlite_1;
+        map.addLayer(layer_Satlite_1);
+        function pop_Outrosmunicpios_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Município</strong><br />' + (feature.properties['Município'] !== null ? Autolinker.link(feature.properties['Município'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Outrosmunicpios_2_0() {
+            return {
+                pane: 'pane_Outrosmunicpios_2',
+                opacity: 1,
+                color: 'rgba(134,126,117,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(102,96,89,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Outrosmunicpios_2');
+        map.getPane('pane_Outrosmunicpios_2').style.zIndex = 402;
+        map.getPane('pane_Outrosmunicpios_2').style['mix-blend-mode'] = 'normal';
+        var layer_Outrosmunicpios_2 = new L.geoJson(json_Outrosmunicpios_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Outrosmunicpios_2',
+            layerName: 'layer_Outrosmunicpios_2',
+            pane: 'pane_Outrosmunicpios_2',
+            onEachFeature: pop_Outrosmunicpios_2,
+            style: style_Outrosmunicpios_2_0,
+        });
+        bounds_group.addLayer(layer_Outrosmunicpios_2);
+        map.addLayer(layer_Outrosmunicpios_2);
+        function pop_MunicpiosdaRMCG_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Município</strong><br />' + (feature.properties['Município'] !== null ? Autolinker.link(feature.properties['Município'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área Territorial km² (2018)</strong><br />' + (feature.properties['Área Territorial km² (2018)'] !== null ? Autolinker.link(feature.properties['Área Territorial km² (2018)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área construída km² (1975)</strong><br />' + (feature.properties['Área construída km² (1975)'] !== null ? Autolinker.link(feature.properties['Área construída km² (1975)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área construída km² (2000)</strong><br />' + (feature.properties['Área construída km² (2000)'] !== null ? Autolinker.link(feature.properties['Área construída km² (2000)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Taxa de crescimento da área construída % (2000)</strong><br />' + (feature.properties['Taxa de crescimento da área construída % (2000)'] !== null ? Autolinker.link(feature.properties['Taxa de crescimento da área construída % (2000)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área construída km² (2014)</strong><br />' + (feature.properties['Área construída km² (2014)'] !== null ? Autolinker.link(feature.properties['Área construída km² (2014)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Taxa de crescimento da área construída % (2014)</strong><br />' + (feature.properties['Taxa de crescimento da área construída % (2014)'] !== null ? Autolinker.link(feature.properties['Taxa de crescimento da área construída % (2014)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>População (2019)</strong><br />' + (feature.properties['População (2019)'] !== null ? Autolinker.link(feature.properties['População (2019)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>hab/km² (2010)</strong><br />' + (feature.properties['hab/km² (2010)'] !== null ? Autolinker.link(feature.properties['hab/km² (2010)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Escolarização 6 a 14 anos % (2010)</strong><br />' + (feature.properties['Escolarização 6 a 14 anos % (2010)'] !== null ? Autolinker.link(feature.properties['Escolarização 6 a 14 anos % (2010)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>IDHM (2010)</strong><br />' + (feature.properties['IDHM (2010)'] !== null ? Autolinker.link(feature.properties['IDHM (2010)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Mortalidade infantil - óbitos por mil nascidos vivos (2015)</strong><br />' + (feature.properties['Mortalidade infantil - óbitos por mil nascidos vivos (2015)'] !== null ? Autolinker.link(feature.properties['Mortalidade infantil - óbitos por mil nascidos vivos (2015)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>PIB per capita - R$ (2017)</strong><br />' + (feature.properties['PIB per capita - R$ (2017)'] !== null ? Autolinker.link(feature.properties['PIB per capita - R$ (2017)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_MunicpiosdaRMCG_3_0() {
+            return {
+                pane: 'pane_MunicpiosdaRMCG_3',
+                opacity: 1,
+                color: 'rgba(134,126,117,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(102,96,89,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_MunicpiosdaRMCG_3');
+        map.getPane('pane_MunicpiosdaRMCG_3').style.zIndex = 403;
+        map.getPane('pane_MunicpiosdaRMCG_3').style['mix-blend-mode'] = 'normal';
+        var layer_MunicpiosdaRMCG_3 = new L.geoJson(json_MunicpiosdaRMCG_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_MunicpiosdaRMCG_3',
+            layerName: 'layer_MunicpiosdaRMCG_3',
+            pane: 'pane_MunicpiosdaRMCG_3',
+            onEachFeature: pop_MunicpiosdaRMCG_3,
+            style: style_MunicpiosdaRMCG_3_0,
+        });
+        bounds_group.addLayer(layer_MunicpiosdaRMCG_3);
+        map.addLayer(layer_MunicpiosdaRMCG_3);
+        function pop_MunicpiosdaRMJP_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Município</strong><br />' + (feature.properties['Município'] !== null ? Autolinker.link(feature.properties['Município'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área Territorial - km² (2018)</strong><br />' + (feature.properties['Área Territorial - km² (2018)'] !== null ? Autolinker.link(feature.properties['Área Territorial - km² (2018)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área construída km² (1975)</strong><br />' + (feature.properties['Área construída km² (1975)'] !== null ? Autolinker.link(feature.properties['Área construída km² (1975)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área construída km² (2000)</strong><br />' + (feature.properties['Área construída km² (2000)'] !== null ? Autolinker.link(feature.properties['Área construída km² (2000)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Taxa de crescimento da área construída % (2000)</strong><br />' + (feature.properties['Taxa de crescimento da área construída % (2000)'] !== null ? Autolinker.link(feature.properties['Taxa de crescimento da área construída % (2000)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área construída km² (2014)</strong><br />' + (feature.properties['Área construída km² (2014)'] !== null ? Autolinker.link(feature.properties['Área construída km² (2014)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Taxa de crescimento da área construída % (2014)</strong><br />' + (feature.properties['Taxa de crescimento da área construída % (2014)'] !== null ? Autolinker.link(feature.properties['Taxa de crescimento da área construída % (2014)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>População  (2019)</strong><br />' + (feature.properties['População  (2019)'] !== null ? Autolinker.link(feature.properties['População  (2019)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>hab/km² (2010)</strong><br />' + (feature.properties['hab/km² (2010)'] !== null ? Autolinker.link(feature.properties['hab/km² (2010)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Escolarização 6 a 14 anos % (2010)</strong><br />' + (feature.properties['Escolarização 6 a 14 anos % (2010)'] !== null ? Autolinker.link(feature.properties['Escolarização 6 a 14 anos % (2010)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>IDHM  (2010)</strong><br />' + (feature.properties['IDHM  (2010)'] !== null ? Autolinker.link(feature.properties['IDHM  (2010)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Mortalidade infantil - óbitos por mil nascidos vivos (2015)</strong><br />' + (feature.properties['Mortalidade infantil - óbitos por mil nascidos vivos (2015)'] !== null ? Autolinker.link(feature.properties['Mortalidade infantil - óbitos por mil nascidos vivos (2015)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>PIB per capita - R$ (2017)</strong><br />' + (feature.properties['PIB per capita - R$ (2017)'] !== null ? Autolinker.link(feature.properties['PIB per capita - R$ (2017)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_MunicpiosdaRMJP_4_0() {
+            return {
+                pane: 'pane_MunicpiosdaRMJP_4',
+                opacity: 1,
+                color: 'rgba(134,126,117,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(102,96,89,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_MunicpiosdaRMJP_4');
+        map.getPane('pane_MunicpiosdaRMJP_4').style.zIndex = 404;
+        map.getPane('pane_MunicpiosdaRMJP_4').style['mix-blend-mode'] = 'normal';
+        var layer_MunicpiosdaRMJP_4 = new L.geoJson(json_MunicpiosdaRMJP_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_MunicpiosdaRMJP_4',
+            layerName: 'layer_MunicpiosdaRMJP_4',
+            pane: 'pane_MunicpiosdaRMJP_4',
+            onEachFeature: pop_MunicpiosdaRMJP_4,
+            style: style_MunicpiosdaRMJP_4_0,
+        });
+        bounds_group.addLayer(layer_MunicpiosdaRMJP_4);
+        map.addLayer(layer_MunicpiosdaRMJP_4);
+        function pop_MunicpiosdaRMR_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Município</strong><br />' + (feature.properties['Município'] !== null ? Autolinker.link(feature.properties['Município'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área Territorial - km² (2018)</strong><br />' + (feature.properties['Área Territorial - km² (2018)'] !== null ? Autolinker.link(feature.properties['Área Territorial - km² (2018)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área construída km² (1975)</strong><br />' + (feature.properties['Área construída km² (1975)'] !== null ? Autolinker.link(feature.properties['Área construída km² (1975)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área construída km² (2000)</strong><br />' + (feature.properties['Área construída km² (2000)'] !== null ? Autolinker.link(feature.properties['Área construída km² (2000)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Taxa de crescimento da área construída % (2000)</strong><br />' + (feature.properties['Taxa de crescimento da área construída % (2000)'] !== null ? Autolinker.link(feature.properties['Taxa de crescimento da área construída % (2000)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área construída km² (2014)</strong><br />' + (feature.properties['Área construída km² (2014)'] !== null ? Autolinker.link(feature.properties['Área construída km² (2014)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Taxa de crescimento da área construída % (2014)</strong><br />' + (feature.properties['Taxa de crescimento da área construída % (2014)'] !== null ? Autolinker.link(feature.properties['Taxa de crescimento da área construída % (2014)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>População (2019)</strong><br />' + (feature.properties['População (2019)'] !== null ? Autolinker.link(feature.properties['População (2019)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>hab/km² (2010)</strong><br />' + (feature.properties['hab/km² (2010)'] !== null ? Autolinker.link(feature.properties['hab/km² (2010)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Escolarização 6 a 14 anos % (2010)</strong><br />' + (feature.properties['Escolarização 6 a 14 anos % (2010)'] !== null ? Autolinker.link(feature.properties['Escolarização 6 a 14 anos % (2010)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>IDHM (2010)</strong><br />' + (feature.properties['IDHM (2010)'] !== null ? Autolinker.link(feature.properties['IDHM (2010)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Mortalidade infantil - óbitos por mil nascidos vivos (2017)</strong><br />' + (feature.properties['Mortalidade infantil - óbitos por mil nascidos vivos (2017)'] !== null ? Autolinker.link(feature.properties['Mortalidade infantil - óbitos por mil nascidos vivos (2017)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>PIB per capita - R$ (2016)</strong><br />' + (feature.properties['PIB per capita - R$ (2016)'] !== null ? Autolinker.link(feature.properties['PIB per capita - R$ (2016)'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_MunicpiosdaRMR_5_0() {
+            return {
+                pane: 'pane_MunicpiosdaRMR_5',
+                opacity: 1,
+                color: 'rgba(134,126,117,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(102,96,89,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_MunicpiosdaRMR_5');
+        map.getPane('pane_MunicpiosdaRMR_5').style.zIndex = 405;
+        map.getPane('pane_MunicpiosdaRMR_5').style['mix-blend-mode'] = 'normal';
+        var layer_MunicpiosdaRMR_5 = new L.geoJson(json_MunicpiosdaRMR_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_MunicpiosdaRMR_5',
+            layerName: 'layer_MunicpiosdaRMR_5',
+            pane: 'pane_MunicpiosdaRMR_5',
+            onEachFeature: pop_MunicpiosdaRMR_5,
+            style: style_MunicpiosdaRMR_5_0,
+        });
+        bounds_group.addLayer(layer_MunicpiosdaRMR_5);
+        map.addLayer(layer_MunicpiosdaRMR_5);
+        function pop_LimitesatuaisdaRMCG_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Município'] !== null ? Autolinker.link(feature.properties['Município'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_LimitesatuaisdaRMCG_6_0() {
+            return {
+                pane: 'pane_LimitesatuaisdaRMCG_6',
+                opacity: 1,
+                color: 'rgba(62,62,62,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_LimitesatuaisdaRMCG_6');
+        map.getPane('pane_LimitesatuaisdaRMCG_6').style.zIndex = 406;
+        map.getPane('pane_LimitesatuaisdaRMCG_6').style['mix-blend-mode'] = 'normal';
+        var layer_LimitesatuaisdaRMCG_6 = new L.geoJson(json_LimitesatuaisdaRMCG_6, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_LimitesatuaisdaRMCG_6',
+            layerName: 'layer_LimitesatuaisdaRMCG_6',
+            pane: 'pane_LimitesatuaisdaRMCG_6',
+            onEachFeature: pop_LimitesatuaisdaRMCG_6,
+            style: style_LimitesatuaisdaRMCG_6_0,
+        });
+        bounds_group.addLayer(layer_LimitesatuaisdaRMCG_6);
+        map.addLayer(layer_LimitesatuaisdaRMCG_6);
+        function pop_LimitesatuaisdaRMJP_7(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Município'] !== null ? Autolinker.link(feature.properties['Município'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_LimitesatuaisdaRMJP_7_0() {
+            return {
+                pane: 'pane_LimitesatuaisdaRMJP_7',
+                opacity: 1,
+                color: 'rgba(62,62,62,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_LimitesatuaisdaRMJP_7');
+        map.getPane('pane_LimitesatuaisdaRMJP_7').style.zIndex = 407;
+        map.getPane('pane_LimitesatuaisdaRMJP_7').style['mix-blend-mode'] = 'normal';
+        var layer_LimitesatuaisdaRMJP_7 = new L.geoJson(json_LimitesatuaisdaRMJP_7, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_LimitesatuaisdaRMJP_7',
+            layerName: 'layer_LimitesatuaisdaRMJP_7',
+            pane: 'pane_LimitesatuaisdaRMJP_7',
+            onEachFeature: pop_LimitesatuaisdaRMJP_7,
+            style: style_LimitesatuaisdaRMJP_7_0,
+        });
+        bounds_group.addLayer(layer_LimitesatuaisdaRMJP_7);
+        map.addLayer(layer_LimitesatuaisdaRMJP_7);
+        function pop_LimitesatuaisdaRMR_8(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NM_MUNICIP'] !== null ? Autolinker.link(feature.properties['NM_MUNICIP'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CD_GEOCMU'] !== null ? Autolinker.link(feature.properties['CD_GEOCMU'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_LimitesatuaisdaRMR_8_0() {
+            return {
+                pane: 'pane_LimitesatuaisdaRMR_8',
+                opacity: 1,
+                color: 'rgba(62,62,62,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_LimitesatuaisdaRMR_8');
+        map.getPane('pane_LimitesatuaisdaRMR_8').style.zIndex = 408;
+        map.getPane('pane_LimitesatuaisdaRMR_8').style['mix-blend-mode'] = 'normal';
+        var layer_LimitesatuaisdaRMR_8 = new L.geoJson(json_LimitesatuaisdaRMR_8, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_LimitesatuaisdaRMR_8',
+            layerName: 'layer_LimitesatuaisdaRMR_8',
+            pane: 'pane_LimitesatuaisdaRMR_8',
+            onEachFeature: pop_LimitesatuaisdaRMR_8,
+            style: style_LimitesatuaisdaRMR_8_0,
+        });
+        bounds_group.addLayer(layer_LimitesatuaisdaRMR_8);
+        map.addLayer(layer_LimitesatuaisdaRMR_8);
+        function pop_LimitesdaRMRem2000_9(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Município'] !== null ? Autolinker.link(feature.properties['Município'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Área Terr'] !== null ? Autolinker.link(feature.properties['Área Terr'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Área cons'] !== null ? Autolinker.link(feature.properties['Área cons'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Área co_1'] !== null ? Autolinker.link(feature.properties['Área co_1'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Taxa de cr'] !== null ? Autolinker.link(feature.properties['Taxa de cr'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Área co_2'] !== null ? Autolinker.link(feature.properties['Área co_2'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Taxa de _1'] !== null ? Autolinker.link(feature.properties['Taxa de _1'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Populaçã'] !== null ? Autolinker.link(feature.properties['Populaçã'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['hab/km² ['] !== null ? Autolinker.link(feature.properties['hab/km² ['].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Escolariza'] !== null ? Autolinker.link(feature.properties['Escolariza'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['IDHM (2010'] !== null ? Autolinker.link(feature.properties['IDHM (2010'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Mortalidad'] !== null ? Autolinker.link(feature.properties['Mortalidad'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PIB per ca'] !== null ? Autolinker.link(feature.properties['PIB per ca'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_LimitesdaRMRem2000_9_0() {
+            return {
+                pane: 'pane_LimitesdaRMRem2000_9',
+                opacity: 1,
+                color: 'rgba(62,62,62,1.0)',
+                dashArray: '10,5',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_LimitesdaRMRem2000_9');
+        map.getPane('pane_LimitesdaRMRem2000_9').style.zIndex = 409;
+        map.getPane('pane_LimitesdaRMRem2000_9').style['mix-blend-mode'] = 'normal';
+        var layer_LimitesdaRMRem2000_9 = new L.geoJson(json_LimitesdaRMRem2000_9, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_LimitesdaRMRem2000_9',
+            layerName: 'layer_LimitesdaRMRem2000_9',
+            pane: 'pane_LimitesdaRMRem2000_9',
+            onEachFeature: pop_LimitesdaRMRem2000_9,
+            style: style_LimitesdaRMRem2000_9_0,
+        });
+        bounds_group.addLayer(layer_LimitesdaRMRem2000_9);
+        function pop_LimitesdaRMRem1973_10(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Município'] !== null ? Autolinker.link(feature.properties['Município'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Área Terr'] !== null ? Autolinker.link(feature.properties['Área Terr'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Área cons'] !== null ? Autolinker.link(feature.properties['Área cons'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Área co_1'] !== null ? Autolinker.link(feature.properties['Área co_1'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Taxa de cr'] !== null ? Autolinker.link(feature.properties['Taxa de cr'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Área co_2'] !== null ? Autolinker.link(feature.properties['Área co_2'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Taxa de _1'] !== null ? Autolinker.link(feature.properties['Taxa de _1'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Populaçã'] !== null ? Autolinker.link(feature.properties['Populaçã'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['hab/km² ['] !== null ? Autolinker.link(feature.properties['hab/km² ['].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Escolariza'] !== null ? Autolinker.link(feature.properties['Escolariza'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['IDHM (2010'] !== null ? Autolinker.link(feature.properties['IDHM (2010'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Mortalidad'] !== null ? Autolinker.link(feature.properties['Mortalidad'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PIB per ca'] !== null ? Autolinker.link(feature.properties['PIB per ca'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_LimitesdaRMRem1973_10_0() {
+            return {
+                pane: 'pane_LimitesdaRMRem1973_10',
+                opacity: 1,
+                color: 'rgba(62,62,62,1.0)',
+                dashArray: '1,5',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_LimitesdaRMRem1973_10');
+        map.getPane('pane_LimitesdaRMRem1973_10').style.zIndex = 410;
+        map.getPane('pane_LimitesdaRMRem1973_10').style['mix-blend-mode'] = 'normal';
+        var layer_LimitesdaRMRem1973_10 = new L.geoJson(json_LimitesdaRMRem1973_10, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_LimitesdaRMRem1973_10',
+            layerName: 'layer_LimitesdaRMRem1973_10',
+            pane: 'pane_LimitesdaRMRem1973_10',
+            onEachFeature: pop_LimitesdaRMRem1973_10,
+            style: style_LimitesdaRMRem1973_10_0,
+        });
+        bounds_group.addLayer(layer_LimitesdaRMRem1973_10);
+        function pop_Limitesestaduais_11(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NM_MUNICIP'] !== null ? Autolinker.link(feature.properties['NM_MUNICIP'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CD_GEOCMU'] !== null ? Autolinker.link(feature.properties['CD_GEOCMU'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NM_MUNIC_1'] !== null ? Autolinker.link(feature.properties['NM_MUNIC_1'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CD_GEOCMU_'] !== null ? Autolinker.link(feature.properties['CD_GEOCMU_'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Limitesestaduais_11_0() {
+            return {
+                pane: 'pane_Limitesestaduais_11',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Limitesestaduais_11');
+        map.getPane('pane_Limitesestaduais_11').style.zIndex = 411;
+        map.getPane('pane_Limitesestaduais_11').style['mix-blend-mode'] = 'normal';
+        var layer_Limitesestaduais_11 = new L.geoJson(json_Limitesestaduais_11, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Limitesestaduais_11',
+            layerName: 'layer_Limitesestaduais_11',
+            pane: 'pane_Limitesestaduais_11',
+            onEachFeature: pop_Limitesestaduais_11,
+            style: style_Limitesestaduais_11_0,
+        });
+        bounds_group.addLayer(layer_Limitesestaduais_11);
+        map.addLayer(layer_Limitesestaduais_11);
+        function pop_reaconstrudade2000a2014CORBANEetal2018_12(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DN'] !== null ? Autolinker.link(feature.properties['DN'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_reaconstrudade2000a2014CORBANEetal2018_12_0() {
+            return {
+                pane: 'pane_reaconstrudade2000a2014CORBANEetal2018_12',
+                opacity: 1,
+                color: 'rgba(255,237,160,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,237,160,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_reaconstrudade2000a2014CORBANEetal2018_12');
+        map.getPane('pane_reaconstrudade2000a2014CORBANEetal2018_12').style.zIndex = 412;
+        map.getPane('pane_reaconstrudade2000a2014CORBANEetal2018_12').style['mix-blend-mode'] = 'normal';
+        var layer_reaconstrudade2000a2014CORBANEetal2018_12 = new L.geoJson(json_reaconstrudade2000a2014CORBANEetal2018_12, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_reaconstrudade2000a2014CORBANEetal2018_12',
+            layerName: 'layer_reaconstrudade2000a2014CORBANEetal2018_12',
+            pane: 'pane_reaconstrudade2000a2014CORBANEetal2018_12',
+            onEachFeature: pop_reaconstrudade2000a2014CORBANEetal2018_12,
+            style: style_reaconstrudade2000a2014CORBANEetal2018_12_0,
+        });
+        bounds_group.addLayer(layer_reaconstrudade2000a2014CORBANEetal2018_12);
+        map.addLayer(layer_reaconstrudade2000a2014CORBANEetal2018_12);
+        function pop_reaconstrudade1975a2000CORBANEetal2018_13(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DN'] !== null ? Autolinker.link(feature.properties['DN'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_reaconstrudade1975a2000CORBANEetal2018_13_0() {
+            return {
+                pane: 'pane_reaconstrudade1975a2000CORBANEetal2018_13',
+                opacity: 1,
+                color: 'rgba(253,141,60,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,141,60,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_reaconstrudade1975a2000CORBANEetal2018_13');
+        map.getPane('pane_reaconstrudade1975a2000CORBANEetal2018_13').style.zIndex = 413;
+        map.getPane('pane_reaconstrudade1975a2000CORBANEetal2018_13').style['mix-blend-mode'] = 'normal';
+        var layer_reaconstrudade1975a2000CORBANEetal2018_13 = new L.geoJson(json_reaconstrudade1975a2000CORBANEetal2018_13, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_reaconstrudade1975a2000CORBANEetal2018_13',
+            layerName: 'layer_reaconstrudade1975a2000CORBANEetal2018_13',
+            pane: 'pane_reaconstrudade1975a2000CORBANEetal2018_13',
+            onEachFeature: pop_reaconstrudade1975a2000CORBANEetal2018_13,
+            style: style_reaconstrudade1975a2000CORBANEetal2018_13_0,
+        });
+        bounds_group.addLayer(layer_reaconstrudade1975a2000CORBANEetal2018_13);
+        map.addLayer(layer_reaconstrudade1975a2000CORBANEetal2018_13);
+        function pop_reaconstrudaat1975CORBANEetal2018_14(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DN'] !== null ? Autolinker.link(feature.properties['DN'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_reaconstrudaat1975CORBANEetal2018_14_0() {
+            return {
+                pane: 'pane_reaconstrudaat1975CORBANEetal2018_14',
+                opacity: 1,
+                color: 'rgba(128,0,38,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(128,0,38,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_reaconstrudaat1975CORBANEetal2018_14');
+        map.getPane('pane_reaconstrudaat1975CORBANEetal2018_14').style.zIndex = 414;
+        map.getPane('pane_reaconstrudaat1975CORBANEetal2018_14').style['mix-blend-mode'] = 'normal';
+        var layer_reaconstrudaat1975CORBANEetal2018_14 = new L.geoJson(json_reaconstrudaat1975CORBANEetal2018_14, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_reaconstrudaat1975CORBANEetal2018_14',
+            layerName: 'layer_reaconstrudaat1975CORBANEetal2018_14',
+            pane: 'pane_reaconstrudaat1975CORBANEetal2018_14',
+            onEachFeature: pop_reaconstrudaat1975CORBANEetal2018_14,
+            style: style_reaconstrudaat1975CORBANEetal2018_14_0,
+        });
+        bounds_group.addLayer(layer_reaconstrudaat1975CORBANEetal2018_14);
+        map.addLayer(layer_reaconstrudaat1975CORBANEetal2018_14);
+        function pop_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NM_MUNICIP'] !== null ? Autolinker.link(feature.properties['NM_MUNICIP'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CD_GEOCMU'] !== null ? Autolinker.link(feature.properties['CD_GEOCMU'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15_0() {
+            return {
+                pane: 'pane_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15',
+                opacity: 1,
+                color: 'rgba(85,0,85,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15');
+        map.getPane('pane_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15').style.zIndex = 415;
+        map.getPane('pane_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15').style['mix-blend-mode'] = 'normal';
+        var layer_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15 = new L.geoJson(json_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15',
+            layerName: 'layer_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15',
+            pane: 'pane_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15',
+            onEachFeature: pop_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15,
+            style: style_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15_0,
+        });
+        bounds_group.addLayer(layer_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15);
+        function pop_reaurbanizadapoucodensaIBGE2017_16(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Densidade</strong><br />' + (feature.properties['Densidade'] !== null ? Autolinker.link(feature.properties['Densidade'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Tipo</strong><br />' + (feature.properties['Tipo'] !== null ? Autolinker.link(feature.properties['Tipo'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_reaurbanizadapoucodensaIBGE2017_16_0() {
+            return {
+                pane: 'pane_reaurbanizadapoucodensaIBGE2017_16',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,160,210,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_reaurbanizadapoucodensaIBGE2017_16');
+        map.getPane('pane_reaurbanizadapoucodensaIBGE2017_16').style.zIndex = 416;
+        map.getPane('pane_reaurbanizadapoucodensaIBGE2017_16').style['mix-blend-mode'] = 'normal';
+        var layer_reaurbanizadapoucodensaIBGE2017_16 = new L.geoJson(json_reaurbanizadapoucodensaIBGE2017_16, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_reaurbanizadapoucodensaIBGE2017_16',
+            layerName: 'layer_reaurbanizadapoucodensaIBGE2017_16',
+            pane: 'pane_reaurbanizadapoucodensaIBGE2017_16',
+            onEachFeature: pop_reaurbanizadapoucodensaIBGE2017_16,
+            style: style_reaurbanizadapoucodensaIBGE2017_16_0,
+        });
+        bounds_group.addLayer(layer_reaurbanizadapoucodensaIBGE2017_16);
+        function pop_reaurbanizadadensaIBGE2017_17(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Densidade</strong><br />' + (feature.properties['Densidade'] !== null ? Autolinker.link(feature.properties['Densidade'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Tipo</strong><br />' + (feature.properties['Tipo'] !== null ? Autolinker.link(feature.properties['Tipo'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_reaurbanizadadensaIBGE2017_17_0() {
+            return {
+                pane: 'pane_reaurbanizadadensaIBGE2017_17',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(151,0,151,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_reaurbanizadadensaIBGE2017_17');
+        map.getPane('pane_reaurbanizadadensaIBGE2017_17').style.zIndex = 417;
+        map.getPane('pane_reaurbanizadadensaIBGE2017_17').style['mix-blend-mode'] = 'normal';
+        var layer_reaurbanizadadensaIBGE2017_17 = new L.geoJson(json_reaurbanizadadensaIBGE2017_17, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_reaurbanizadadensaIBGE2017_17',
+            layerName: 'layer_reaurbanizadadensaIBGE2017_17',
+            pane: 'pane_reaurbanizadadensaIBGE2017_17',
+            onEachFeature: pop_reaurbanizadadensaIBGE2017_17,
+            style: style_reaurbanizadadensaIBGE2017_17_0,
+        });
+        bounds_group.addLayer(layer_reaurbanizadadensaIBGE2017_17);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Classificação cronológica da área construída* na RMR, RMJP e RMCG**</h2>';
+            };
+            title.addTo(map);
+            var abstract = new L.Control({'position':'bottomright'});
+            abstract.onAdd = function (map) {
+                this._div = L.DomUtil.create('div',
+                'leaflet-control leaflet-bar abstract');
+                this._div.id = 'abstract'
+                    this._div.setAttribute("onmouseenter", "abstract.show()");
+                    this._div.setAttribute("onmouseleave", "abstract.hide()");
+                    this.hide();
+                    return this._div;
+                };
+                abstract.hide = function () {
+                    this._div.classList.remove("abstractUncollapsed");
+                    this._div.classList.add("abstract");
+                    this._div.innerHTML = 'i'
+                }
+                abstract.show = function () {
+                    this._div.classList.remove("abstract");
+                    this._div.classList.add("abstractUncollapsed");
+                    this._div.innerHTML = 'A classificação das áreas urbanizadas disponibilizadas pelo IBGE realizou-se através da análise de imagens de satélite RapidEye, obtidas entre o período de 2011 a 2014. Neste mapa são representadas as áreas urbanizadas das Concentrações Urbanas com mais de 100.000 habitantes. <br /><br />O mapeamento cronológico da área construída nas Regiões Metropolitanas de Recife, João Pessoa, Campina Grande e entorno foi elaborado com dados públicos do projeto Global Human Settlement Layer, derivado da classificação de séries históricas Landsat. Abrange uma área aproximada de 63.000 km².<br /><br />Organização: Carolina Israel, Jan Bitoun, Lívia Miranda, Olga Firkowski, Rosa Moura, Twane Xavier (Núcleos RM Curitiba, Recife e Campina Grande do Observatório das Metrópoles).<br />Elaboração: Carolina Israel. <br /><br />Referências<br />Corbane, C.; Florczyk, A.; Pesaresi, M.; Politis, P.; Syrris, V. GHS-BUILT R2018A - GHS built-up grid, derived from Landsat, multitemporal (1975-1990-2000-2014). European Commission, Joint Research Centre (JRC) [Dataset], 2018. Disponível em: http://data.europa.eu/89h/jrc-ghsl-10007.<br /><br />IBGE, Coordenação de Geografia. Arranjos populacionais e concentrações urbanas no Brasil. Rio de Janeiro : IBGE, 2016. Disponível em: https://biblioteca.ibge.gov.br/index.php/biblioteca-catalogo?view=detalhes&id=299700<br /><br />IBGE, Coordenação de Geografia. Áreas urbanizadas do Brasil : 2015.  Rio de Janeiro : IBGE, 2017. Disponível em: https://biblioteca.ibge.gov.br/index.php/biblioteca-catalogo?view=detalhes&id=2100639<br /><br />*Ao contrário das demais regiões do país, os dados referentes à área construída para o período de 1975 a 1990 não estão disponíveis para parte das regiões norte e nordeste, devido à alta nebulosidade presente no período de captura das imagens de satélite. <br />**Outras 6 regiões metropolitanas do estado da Paraíba, que integram o recorte, não foram inseridas no presente mapa e podem ser verificadas em: http://fnembrasil.org/pb/. ';
+            };
+            abstract.addTo(map);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/reaurbanizadadensaIBGE2017_17.png" /> Área urbanizada densa (IBGE, 2017)': layer_reaurbanizadadensaIBGE2017_17,'<img src="legend/reaurbanizadapoucodensaIBGE2017_16.png" /> Área urbanizada pouco densa (IBGE, 2017)': layer_reaurbanizadapoucodensaIBGE2017_16,'<img src="legend/LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15.png" /> Limites das Concentrações Urbanas com mais de 100 mil habitantes (IBGE, 2016)': layer_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15,'<img src="legend/reaconstrudaat1975CORBANEetal2018_14.png" /> Área construída até 1975 (CORBANE et al., 2018)': layer_reaconstrudaat1975CORBANEetal2018_14,'<img src="legend/reaconstrudade1975a2000CORBANEetal2018_13.png" /> Área construída de 1975 a 2000 (CORBANE et al., 2018)': layer_reaconstrudade1975a2000CORBANEetal2018_13,'<img src="legend/reaconstrudade2000a2014CORBANEetal2018_12.png" /> Área construída de 2000 a 2014 (CORBANE et al., 2018)': layer_reaconstrudade2000a2014CORBANEetal2018_12,'<img src="legend/Limitesestaduais_11.png" /> Limites estaduais': layer_Limitesestaduais_11,'<img src="legend/LimitesdaRMRem1973_10.png" /> Limites da RMR em 1973': layer_LimitesdaRMRem1973_10,'<img src="legend/LimitesdaRMRem2000_9.png" /> Limites da RMR em 2000': layer_LimitesdaRMRem2000_9,'<img src="legend/LimitesatuaisdaRMR_8.png" /> Limites atuais da RMR': layer_LimitesatuaisdaRMR_8,'<img src="legend/LimitesatuaisdaRMJP_7.png" /> Limites atuais da RMJP': layer_LimitesatuaisdaRMJP_7,'<img src="legend/LimitesatuaisdaRMCG_6.png" /> Limites atuais da RMCG': layer_LimitesatuaisdaRMCG_6,'<img src="legend/MunicpiosdaRMR_5.png" /> Municípios da RMR': layer_MunicpiosdaRMR_5,'<img src="legend/MunicpiosdaRMJP_4.png" /> Municípios da RMJP': layer_MunicpiosdaRMJP_4,'<img src="legend/MunicpiosdaRMCG_3.png" /> Municípios da RMCG': layer_MunicpiosdaRMCG_3,'<img src="legend/Outrosmunicpios_2.png" /> Outros municípios': layer_Outrosmunicpios_2,"Satélite": layer_Satlite_1,"Arruamento": layer_Arruamento_0,},{collapsed:false}).addTo(map);
+        setBounds();
+	var graphicScale = L.control.graphicScale({
+			doubleLine: true,
+			fill: 'fill',
+			showSubunits: true,
+			maxUnitsWidth: 160,
+		}).addTo(map);
+		var scaleText = L.DomUtil.create('div', 'scaleText' );
+		graphicScale._container.insertBefore(scaleText, graphicScale._container.firstChild);
+        </script>
+    </body>
+</html>
