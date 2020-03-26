@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt_BR">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,9 +10,7 @@
         <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
         <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
         <link rel="stylesheet" href="css/leaflet-measure.css">
-	<link rel="stylesheet" href="css/Leaflet.GraphicScale.min.css">
-	<link rel="stylesheet" href="css/styleLegend.css">        
-	<style>
+        <style>
         html, body, #map {
             width: 100%;
             height: 100%;
@@ -20,7 +18,7 @@
             margin: 0;
         }
         </style>
-        <title>Classificação cronológica da área construída* na RMR, RMJP e RMCG**</title>
+        <title>Classificação  cronológica da área construída* - Regiões Metropolitanas de Recife,  João Pessoa e Campina Grande**</title>
     </head>
     <body>
         <div id="map">
@@ -36,7 +34,6 @@
         <script src="js/labels.js"></script>
         <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
         <script src="js/leaflet-measure.js"></script>
-	<script src="js/Leaflet.GraphicScale.min.js"></script>
         <script src="data/Outrosmunicpios_2.js"></script>
         <script src="data/MunicpiosdaRMCG_3.js"></script>
         <script src="data/MunicpiosdaRMJP_4.js"></script>
@@ -50,13 +47,13 @@
         <script src="data/reaconstrudade2000a2014CORBANEetal2018_12.js"></script>
         <script src="data/reaconstrudade1975a2000CORBANEetal2018_13.js"></script>
         <script src="data/reaconstrudaat1975CORBANEetal2018_14.js"></script>
-        <script src="data/LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15.js"></script>
+        <script src="data/Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15.js"></script>
         <script src="data/reaurbanizadapoucodensaIBGE2017_16.js"></script>
         <script src="data/reaurbanizadadensaIBGE2017_17.js"></script>
         <script>
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[-8.348794283399831,-36.24513408722028],[-6.858882514216356,-32.9483340521674]]);
+        }).fitBounds([[-8.333325537490023,-36.23345333851695],[-6.922408665784182,-33.111283459086856]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var measureControl = new L.Control.Measure({
@@ -65,12 +62,14 @@
             secondaryLengthUnit: 'kilometers',
             primaryAreaUnit: 'sqmeters',
             secondaryAreaUnit: 'hectares'
-        });
+     
+	});
         measureControl.addTo(map);
         document.getElementsByClassName('leaflet-control-measure-toggle')[0]
         .innerHTML = '';
         document.getElementsByClassName('leaflet-control-measure-toggle')[0]
         .className += ' fas fa-ruler';
+	
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
         }
@@ -590,7 +589,7 @@
                 lineJoin: 'bevel',
                 weight: 3.0,
                 fillOpacity: 0,
-                interactive: false,
+                interactive: true,
             }
         }
         map.createPane('pane_LimitesdaRMRem1973_10');
@@ -598,7 +597,7 @@
         map.getPane('pane_LimitesdaRMRem1973_10').style['mix-blend-mode'] = 'normal';
         var layer_LimitesdaRMRem1973_10 = new L.geoJson(json_LimitesdaRMRem1973_10, {
             attribution: '',
-            interactive: false,
+            interactive: true,
             dataVar: 'json_LimitesdaRMRem1973_10',
             layerName: 'layer_LimitesdaRMRem1973_10',
             pane: 'pane_LimitesdaRMRem1973_10',
@@ -664,14 +663,14 @@
             return {
                 pane: 'pane_reaconstrudade2000a2014CORBANEetal2018_12',
                 opacity: 1,
-                color: 'rgba(255,237,160,1.0)',
+                color: 'rgba(128,0,38,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
                 weight: 1, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(255,237,160,1.0)',
+                fillColor: 'rgba(128,0,38,1.0)',
                 interactive: false,
             }
         }
@@ -740,14 +739,14 @@
             return {
                 pane: 'pane_reaconstrudaat1975CORBANEetal2018_14',
                 opacity: 1,
-                color: 'rgba(128,0,38,1.0)',
+                color: 'rgba(255,237,160,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
                 weight: 1, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(128,0,38,1.0)',
+                fillColor: 'rgba(255,237,160,1.0)',
                 interactive: false,
             }
         }
@@ -765,7 +764,7 @@
         });
         bounds_group.addLayer(layer_reaconstrudaat1975CORBANEetal2018_14);
         map.addLayer(layer_reaconstrudaat1975CORBANEetal2018_14);
-        function pop_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15(feature, layer) {
+        function pop_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['NM_MUNICIP'] !== null ? Autolinker.link(feature.properties['NM_MUNICIP'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
@@ -777,9 +776,9 @@
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15_0() {
+        function style_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15_0() {
             return {
-                pane: 'pane_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15',
+                pane: 'pane_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15',
                 opacity: 1,
                 color: 'rgba(85,0,85,1.0)',
                 dashArray: '',
@@ -787,22 +786,22 @@
                 lineJoin: 'bevel',
                 weight: 2.0,
                 fillOpacity: 0,
-                interactive: false,
+                interactive: true,
             }
         }
-        map.createPane('pane_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15');
-        map.getPane('pane_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15').style.zIndex = 415;
-        map.getPane('pane_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15').style['mix-blend-mode'] = 'normal';
-        var layer_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15 = new L.geoJson(json_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15, {
+        map.createPane('pane_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15');
+        map.getPane('pane_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15').style.zIndex = 415;
+        map.getPane('pane_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15').style['mix-blend-mode'] = 'normal';
+        var layer_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15 = new L.geoJson(json_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15, {
             attribution: '',
-            interactive: false,
-            dataVar: 'json_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15',
-            layerName: 'layer_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15',
-            pane: 'pane_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15',
-            onEachFeature: pop_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15,
-            style: style_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15_0,
+            interactive: true,
+            dataVar: 'json_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15',
+            layerName: 'layer_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15',
+            pane: 'pane_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15',
+            onEachFeature: pop_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15,
+            style: style_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15_0,
         });
-        bounds_group.addLayer(layer_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15);
+        bounds_group.addLayer(layer_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15);
         function pop_reaurbanizadapoucodensaIBGE2017_16(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
@@ -890,7 +889,7 @@
                 return this._div;
             };
             title.update = function () {
-                this._div.innerHTML = '<h2>Classificação cronológica da área construída* na RMR, RMJP e RMCG**</h2>';
+                this._div.innerHTML = '<h2>Classificação  cronológica da área construída* - Regiões Metropolitanas de Recife,  João Pessoa e Campina Grande**</h2>';
             };
             title.addTo(map);
             var abstract = new L.Control({'position':'bottomright'});
@@ -917,24 +916,16 @@
         var osmGeocoder = new L.Control.Geocoder({
             collapsed: true,
             position: 'topleft',
-            text: 'Search',
-            title: 'Testing'
+            text: 'Busca',
+            title: 'Busca'
         }).addTo(map);
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
         .className += ' fa fa-search';
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
-        .title += 'Search for a place';
+        .title += 'Busca por endereço';
         var baseMaps = {};
-         L.control.layers(baseMaps,{'<img src="legend/Limitesestaduais_11.png" /> Limites estaduais': layer_Limitesestaduais_11,'<img src="legend/LimitesdaRMRem1973_10.png" /> Limites da RMR em 1973': layer_LimitesdaRMRem1973_10,'<img src="legend/LimitesdaRMRem2000_9.png" /> Limites da RMR em 2000': layer_LimitesdaRMRem2000_9,'<img src="legend/LimitesatuaisdaRMR_8.png" /> Limites atuais da RMR': layer_LimitesatuaisdaRMR_8,'<img src="legend/LimitesatuaisdaRMJP_7.png" /> Limites atuais da RMJP': layer_LimitesatuaisdaRMJP_7,'<img src="legend/LimitesatuaisdaRMCG_6.png" /> Limites atuais da RMCG': layer_LimitesatuaisdaRMCG_6,'<img src="legend/MunicpiosdaRMR_5.png" /> Municípios da RMR': layer_MunicpiosdaRMR_5,'<img src="legend/MunicpiosdaRMJP_4.png" /> Municípios da RMJP': layer_MunicpiosdaRMJP_4,'<img src="legend/MunicpiosdaRMCG_3.png" /> Municípios da RMCG': layer_MunicpiosdaRMCG_3,'<img src="legend/Outrosmunicpios_2.png" /> Outros municípios': layer_Outrosmunicpios_2,'<img src="legend/LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15.png" /> Limites das Concentrações Urbanas com mais de 100 mil habitantes (IBGE, 2016)': layer_LimitesdasConcentraesUrbanascommaisde100milhabitantesIBGE2016_15,'<img src="legend/reaurbanizadadensaIBGE2017_17.png" /> Área urbanizada densa (IBGE, 2017)': layer_reaurbanizadadensaIBGE2017_17,'<img src="legend/reaurbanizadapoucodensaIBGE2017_16.png" /> Área urbanizada pouco densa (IBGE, 2017)': layer_reaurbanizadapoucodensaIBGE2017_16,'<img src="legend/reaconstrudaat1975CORBANEetal2018_14.png" /> Área construída até 1975 (CORBANE et al., 2018)': layer_reaconstrudaat1975CORBANEetal2018_14,'<img src="legend/reaconstrudade1975a2000CORBANEetal2018_13.png" /> Área construída de 1975 a 2000 (CORBANE et al., 2018)': layer_reaconstrudade1975a2000CORBANEetal2018_13,'<img src="legend/reaconstrudade2000a2014CORBANEetal2018_12.png" /> Área construída de 2000 a 2014 (CORBANE et al., 2018)': layer_reaconstrudade2000a2014CORBANEetal2018_12,"Arruamento": layer_Arruamento_0,"Satélite": layer_Satlite_1,},{collapsed:false}).addTo(map);
+          L.control.layers(baseMaps,{'<img src="legend/Limitesestaduais_11.png" /> Limites estaduais': layer_Limitesestaduais_11,'<img src="legend/LimitesdaRMRem1973_10.png" /> Limites da RMR em 1973': layer_LimitesdaRMRem1973_10,'<img src="legend/LimitesdaRMRem2000_9.png" /> Limites da RMR em 2000': layer_LimitesdaRMRem2000_9,'<img src="legend/LimitesatuaisdaRMR_8.png" /> Limites atuais da RMR': layer_LimitesatuaisdaRMR_8,'<img src="legend/LimitesatuaisdaRMJP_7.png" /> Limites atuais da RMJP': layer_LimitesatuaisdaRMJP_7,'<img src="legend/LimitesatuaisdaRMCG_6.png" /> Limites atuais da RMCG': layer_LimitesatuaisdaRMCG_6,'<img src="legend/MunicpiosdaRMR_5.png" /> Municípios da RMR': layer_MunicpiosdaRMR_5,'<img src="legend/MunicpiosdaRMJP_4.png" /> Municípios da RMJP': layer_MunicpiosdaRMJP_4,'<img src="legend/MunicpiosdaRMCG_3.png" /> Municípios da RMCG': layer_MunicpiosdaRMCG_3,'<img src="legend/Outrosmunicpios_2.png" /> Outros municípios': layer_Outrosmunicpios_2,'<img src="legend/Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15.png" /> Limites das concentrações urbanas com mais de 100 mil habitantes (IBGE, 2016)': layer_Limitesdasconcentraesurbanascommaisde100milhabitantesIBGE2016_15,'<img src="legend/reaurbanizadadensaIBGE2017_17.png" /> Área urbanizada densa (IBGE, 2017)': layer_reaurbanizadadensaIBGE2017_17,'<img src="legend/reaurbanizadapoucodensaIBGE2017_16.png" /> Área urbanizada pouco densa (IBGE, 2017)': layer_reaurbanizadapoucodensaIBGE2017_16,'<img src="legend/reaconstrudaat1975CORBANEetal2018_14.png" /> Área construída até 1975 (CORBANE et al., 2018)': layer_reaconstrudaat1975CORBANEetal2018_14,'<img src="legend/reaconstrudade1975a2000CORBANEetal2018_13.png" /> Área construída de 1975 a 2000 (CORBANE et al., 2018)': layer_reaconstrudade1975a2000CORBANEetal2018_13,'<img src="legend/reaconstrudade2000a2014CORBANEetal2018_12.png" /> Área construída de 2000 a 2014 (CORBANE et al., 2018)': layer_reaconstrudade2000a2014CORBANEetal2018_12,"Arruamento": layer_Arruamento_0,"Satélite": layer_Satlite_1,}).addTo(map);
         setBounds();
-	var graphicScale = L.control.graphicScale({
-			doubleLine: true,
-			fill: 'fill',
-			showSubunits: true,
-			maxUnitsWidth: 160,
-		}).addTo(map);
-		var scaleText = L.DomUtil.create('div', 'scaleText' );
-		graphicScale._container.insertBefore(scaleText, graphicScale._container.firstChild);
         </script>
     </body>
 </html>
