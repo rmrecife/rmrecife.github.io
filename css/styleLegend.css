@@ -10,6 +10,7 @@
     font-family: 'Times New Roman', serif;
     font-size: 14px;
     margin-bottom: 1px;
+
 }
 .leaflet-control-graphicscale .labelSub {
     font-size: 14px;
@@ -36,6 +37,7 @@
 .scaleText h1 {
     font-family: 'Times New Roman', serif;
     font-size: 20px;
+
 }
 .scaleText .choice {
     margin: 0 5px;
